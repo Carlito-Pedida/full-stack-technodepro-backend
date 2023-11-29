@@ -152,3 +152,38 @@ export const getAllUsers: RequestHandler = async (req, res, next) => {
   });
   res.status(200).json(getUser);
 };
+
+export const updateProfile: RequestHandler = async (req, res, next) => {
+  const user: User | null = await verifyUser(req);
+
+  if (user) {
+    let userId = req.params.userId;
+    let updatedProfile: User = req.body;
+    if (updatedProfile.username && updatedProfile.password) {
+      let hashedPassword = await hashPassword(updatedProfile.password);
+      updatedProfile.password = hashedPassword;
+
+      updatedProfile.userId = user.userId;
+
+      let userFound = await User.findByPk(userId);
+
+      userFound &&
+        userFound.userId == updatedProfile.userId &&
+        updatedProfile.email &&
+        updatedProfile.first_name &&
+        updatedProfile.last_name &&
+        updatedProfile.city &&
+        updatedProfile.state &&
+        updatedProfile.zipcode &&
+        updatedProfile.userImg;
+      {
+        await User.update(updatedProfile, {
+          where: { userId: userId }
+        });
+      }
+      res.status(200).json(updatedProfile);
+    }
+  } else {
+    res.status(400).json();
+  }
+};

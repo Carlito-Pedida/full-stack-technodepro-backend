@@ -6,7 +6,8 @@ import {
   getAllUsers,
   getUserPosts,
   loginUser,
-  getUserById
+  getUserById,
+  updateProfile
   //getProfile
 } from "../controllers/userController";
 
@@ -17,9 +18,8 @@ router.get("/", getAllUsers);
 router.post("/login", loginUser);
 router.post("/:userId", getUserById);
 router.get("/current/:userId", getCurrentUser);
-//router.get("/current/:userId", getProfile);
 router.get("/userposts/:userId", getPostByUser);
-//router.get("/userposts", getUserPosts);
 router.get("/posts/:userId", getUserPosts);
+router.put("/:userId", updateProfile);
 
 export default router;
