@@ -26,12 +26,12 @@ export function PostsFactory(sequelize: Sequelize) {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
+        unique: "compositeIndex"
       },
       post: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique: "compositeIndex"
+        allowNull: true
       },
       imageUrl: {
         type: DataTypes.STRING,

@@ -24,11 +24,17 @@
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.461.0",
+    "@aws-sdk/lib-storage": "^3.461.0",
+    "@google-cloud/storage": "^7.6.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
-    "express": "^4.17.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "formidable": "^3.5.1",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.32.1",

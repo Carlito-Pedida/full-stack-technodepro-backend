@@ -1,11 +1,13 @@
 import { Router } from "express";
 import {
-  createPost,
   deletePost,
   getAllPosts,
   getOnePost,
   updatePost,
-  getPostByUser
+  getPostByUser,
+  writePost,
+  imagePost,
+  createPost
 } from "../controllers/postController";
 
 const router = Router();
@@ -13,6 +15,10 @@ const router = Router();
 router.get("/", getAllPosts);
 
 router.post("/", createPost);
+
+router.post("/write", writePost);
+
+router.post("/image", imagePost);
 
 router.get("/:postId", getOnePost);
 

@@ -2,6 +2,14 @@ import { RequestHandler } from "express";
 import { Posts } from "../models/posts";
 import { User } from "../models/user";
 import { verifyUser } from "../services/auth";
+const multer = require("multer");
+
+const upload = multer({
+  dest: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024
+  }
+});
 
 export const getAllPosts: RequestHandler = async (req, res, next) => {
   let posts = await Posts.findAll({
@@ -32,8 +40,43 @@ export const createPost: RequestHandler = async (req, res, next) => {
   let newPost: Posts = req.body;
   newPost.userId = user.userId;
 
-  if (newPost.post && newPost.imageUrl) {
+  if (newPost.post || newPost.imageUrl) {
     let created = await Posts.create(newPost);
+    res.status(201).json(created);
+  } else {
+    res.status(400).send();
+  }
+};
+
+export const writePost: RequestHandler = async (req, res, next) => {
+  let user: User | null = await verifyUser(req);
+
+  if (!user) {
+    return res.status(403).send();
+  }
+
+  let newPost: Posts = req.body;
+  newPost.userId = user.userId;
+
+  if (newPost.post) {
+    let created = await Posts.create(newPost);
+    res.status(201).json(created);
+  } else {
+    res.status(400).send();
+  }
+};
+export const imagePost: RequestHandler = async (req, res, next) => {
+  let user: User | null = await verifyUser(req);
+
+  if (!user) {
+    return res.status(403).send();
+  }
+
+  let newImagePost: Posts = req.body;
+  newImagePost.userId = user.userId;
+
+  if (newImagePost.imageUrl) {
+    let created = await Posts.create(newImagePost);
     res.status(201).json(created);
   } else {
     res.status(400).send();
