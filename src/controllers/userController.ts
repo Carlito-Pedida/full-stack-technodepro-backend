@@ -1,12 +1,20 @@
 import { RequestHandler } from "express";
 import { User } from "../models/user";
+import { Posts } from "../models/posts";
 import {
   comparePasswords,
   hashPassword,
   signUserToken,
   verifyUser
 } from "../services/auth";
-import { Posts } from "../models/posts";
+
+export const getAllUsers: RequestHandler = async (req, res, next) => {
+  let users = await User.findAll({
+    attributes: { exclude: ["password"] },
+    include: [{ all: true, nested: true }]
+  });
+  res.status(200).json(users);
+};
 
 export const createUser: RequestHandler = async (req, res, next) => {
   let newUser: User = req.body;
@@ -144,13 +152,6 @@ export const getUserPostById: RequestHandler = async (req, res, next) => {
   } else {
     res.status(404).json();
   }
-};
-
-export const getAllUsers: RequestHandler = async (req, res, next) => {
-  let getUser = await User.findAll({
-    include: Posts
-  });
-  res.status(200).json(getUser);
 };
 
 export const updateProfile: RequestHandler = async (req, res, next) => {
