@@ -18,28 +18,22 @@ export const getAllUsers: RequestHandler = async (req, res, next) => {
 
 export const createUser: RequestHandler = async (req, res, next) => {
   let newUser: User = req.body;
-  if (
-    newUser.username &&
-    newUser.password &&
-    newUser.email &&
-    newUser.first_name &&
-    newUser.last_name &&
-    newUser.city &&
-    newUser.state &&
-    newUser.zipcode &&
-    newUser.userImg
-  ) {
+  if (newUser.username && newUser.password) {
     let hashedPassword = await hashPassword(newUser.password);
     newUser.password = hashedPassword;
     let created = await User.create(newUser);
-    res.status(200).json({
+    res.status(201).json({
+      user_id: created.userId,
       username: created.username,
-      userId: created.userId,
       first_name: created.first_name,
-      last_name: created.last_name
+      last_name: created.last_name,
+      email: created.email,
+      city: created.city,
+      state: created.state,
+      zipcode: created.zipcode
     });
   } else {
-    res.status(400).send("All fields are required");
+    res.status(400).send("Please complete all required fields");
   }
 };
 
@@ -88,13 +82,14 @@ export const getProfile: RequestHandler = async (req, res, next) => {
   res.status(401).json();
 };
 
-export const getCurrentUser: RequestHandler = async (req, res, next) => {
+export const getOneUser: RequestHandler = async (req, res, next) => {
   let user: User | null = await verifyUser(req);
 
   if (user) {
     res.status(200).json({
       userId: user.userId,
       username: user.username,
+      password: user.password,
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
@@ -114,7 +109,7 @@ export const getUserPosts: RequestHandler = async (req, res, next) => {
 
   if (user) {
     let posts = await User.findByPk(user.userId, {
-      include: Posts
+      include: [{ all: true, nested: true }]
     });
     res.status(200).json(posts);
   } else {
@@ -179,7 +174,7 @@ export const updateProfile: RequestHandler = async (req, res, next) => {
         updatedProfile.userImg;
       {
         await User.update(updatedProfile, {
-          where: { userId: userId }
+          where: { userId: parseInt(userId) }
         });
       }
       res.status(200).json(updatedProfile);
