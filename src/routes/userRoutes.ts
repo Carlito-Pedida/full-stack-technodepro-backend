@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   createUser,
-  getCurrentUser,
+  getOneUser,
   getPostByUser,
   getAllUsers,
   getUserPosts,
@@ -17,7 +17,7 @@ router.post("/", createUser);
 router.get("/", getAllUsers);
 router.post("/login", loginUser);
 router.post("/:userId", getUserById);
-router.get("/current/:userId", getCurrentUser);
+router.get("/:userId", getOneUser);
 router.get("/userposts/:userId", getPostByUser);
 router.get("/posts/:userId", getUserPosts);
 router.put("/:userId", updateProfile);
