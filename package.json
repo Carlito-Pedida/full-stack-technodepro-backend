@@ -28,6 +28,7 @@
     "@aws-sdk/lib-storage": "^3.461.0",
     "@google-cloud/storage": "^7.6.0",
     "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -36,7 +37,9 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
+    "node-cron": "^3.0.3",
     "reflect-metadata": "^0.1.13",
+    "rss-parser": "^3.13.0",
     "sequelize": "^6.32.1",
     "sequelize-typescript": "^2.1.5"
   }
